@@ -54,7 +54,12 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=f"日付:{ti}, 予定名:{co}"))
-            
+        conn=sqlite3.connect('schedule.db')
+        c=conn.cursor()
+        user_id=event.source.user_id
+        c.execute(f"INSERT INTO schedules VALUES ({va},{ti},{co},{user_id})")
+        conn.commit()
+        conn.close()
     elif len(temp) == 3:
         va=1
         ti=temp[0]+temp[2]
@@ -65,16 +70,16 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=f"日付:{temp[0]}, 予定名:{co}, 時刻{temp[2]}"))
+        conn=sqlite3.connect('schedule.db')
+        c=conn.cursor()
+        user_id=event.source.user_id
+        c.execute(f"INSERT INTO schedules VALUES ({va},{ti},{co},{user_id})")
+        conn.commit()
+        conn.close()
     else:
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text="形式が正しくないため登録できませんでした。。。"))
-    conn=sqlite3.connect('schedule.db')
-    c=conn.cursor()
-    user_id=event.source.user_id
-    c.execute(f"INSERT INTO articles VALUES ({va},{ti},{co},{user_id})")
-    conn.commit()
-    conn.close()
 
 # handler.add(): 引数にlinebotのリクエストのイベントを指定
 @handler.add(FollowEvent)# FollowEventをimportするのを忘れずに！
