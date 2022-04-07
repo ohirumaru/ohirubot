@@ -1,0 +1,22 @@
+aiohttp==3.8.1
+aiosignal==1.2.0
+async-timeout==4.0.2
+attrs==21.4.0
+certifi==2021.10.8
+charset-normalizer==2.0.12
+click @ file:///Users/runner/miniforge3/conda-bld/click_1648793535367/work
+Flask @ file:///home/conda/feedstock_root/build_artifacts/flask_1648714429286/work
+frozenlist==1.3.0
+future==0.18.2
+idna==3.3
+importlib-metadata @ file:///Users/runner/miniforge3/conda-bld/importlib-metadata_1648728338447/work
+itsdangerous @ file:///home/conda/feedstock_root/build_artifacts/itsdangerous_1648147185463/work
+Jinja2 @ file:///home/conda/feedstock_root/build_artifacts/jinja2_1648299710939/work
+line-bot-sdk==2.2.1
+MarkupSafe @ file:///Users/runner/miniforge3/conda-bld/markupsafe_1648737598016/work
+multidict==6.0.2
+requests==2.27.1
+urllib3==1.26.9
+Werkzeug @ file:///home/conda/feedstock_root/build_artifacts/werkzeug_1648847766614/work
+yarl==1.7.2
+zipp @ file:///home/conda/feedstock_root/build_artifacts/zipp_1649012893348/work
