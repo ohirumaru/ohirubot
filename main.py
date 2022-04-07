@@ -50,10 +50,7 @@ def handle_message(event):
         co=temp[1]
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text='以下の内容で登録します'))
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=f"日付:{ti}, 予定名:{co}"))
+            [TextSendMessage(text='以下の内容で登録します'), TextSendMessage(text=f"日付:{ti}, 予定名:{co}")])
         conn=sqlite3.connect('schedule.db')
         c=conn.cursor()
         user_id=event.source.user_id
@@ -66,10 +63,7 @@ def handle_message(event):
         co=temp[1]
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text='以下の内容で登録します'))
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=f"日付:{temp[0]}, 予定名:{co}, 時刻{temp[2]}"))
+            [TextSendMessage(text='以下の内容で登録します'), TextSendMessage(text=f"日付:{temp[0]}, 予定名:{co}, 時刻{temp[2]}")])
         conn=sqlite3.connect('schedule.db')
         c=conn.cursor()
         user_id=event.source.user_id
