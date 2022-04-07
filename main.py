@@ -1,6 +1,3 @@
-CHANNEL_SECRET = "bbc96bdbcc54d22e544a6346006ab2eb"
-CHANNEL_ACCESS_TOKEN = "b1SsUse7SwkexYplEBZUjLAq2wH3us0fOx1/wJDKSzIACqjOuFg/7QJFEl2pCM/F4KCS4yS/ih8j3vThqMZJDeUerNniKnEHkJVn9RQqoS0O4pLDaeq/PkMTXcTU+qUFfwJQpkgUuEY/QscZR065HwdB04t89/1O/w1cDnyilFU="
-
 # コピペゾーン
 from flask import Flask, request, abort
 
