@@ -1,0 +1,94 @@
+CHANNEL_SECRET = "bbc96bdbcc54d22e544a6346006ab2eb"
+CHANNEL_ACCESS_TOKEN = "b1SsUse7SwkexYplEBZUjLAq2wH3us0fOx1/wJDKSzIACqjOuFg/7QJFEl2pCM/F4KCS4yS/ih8j3vThqMZJDeUerNniKnEHkJVn9RQqoS0O4pLDaeq/PkMTXcTU+qUFfwJQpkgUuEY/QscZR065HwdB04t89/1O/w1cDnyilFU="
+
+# コピペゾーン
+from flask import Flask, request, abort
+
+from linebot import (
+    LineBotApi, WebhookHandler
+)
+from linebot.exceptions import (
+    InvalidSignatureError
+)
+from linebot.models import (
+    MessageEvent, TextMessage, TextSendMessage, FollowEvent
+)
+import os
+
+import sqlite3
+
+app = Flask(__name__)
+
+#環境変数取得
+CHANNEL_ACCESS_TOKEN = os.environ["CHANNEL_ACCESS_TOKEN"]
+CHANNEL_SECRET = os.environ["CHANNEL_SECRET"]
+
+line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
+handler = WebhookHandler(CHANNEL_SECRET)
+
+@app.route("/callback", methods=['POST'])
+def callback():
+    # get X-Line-Signature header value
+    signature = request.headers['X-Line-Signature']
+
+    # get request body as text
+    body = request.get_data(as_text=True)
+    app.logger.info("Request body: " + body)
+
+    # handle webhook body
+    try:
+        handler.handle(body, signature)
+    except InvalidSignatureError:
+        abort(400)
+
+    return 'OK'
+
+
+@handler.add(MessageEvent, message=TextMessage)
+def handle_message(event):
+    temp=event.message.text.split('　')
+    if len(temp) == 2:
+        va=0
+        ti=temp[0]
+        co=temp[1]
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='以下の内容で登録します'))
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=f"日付:{ti}, 予定名:{co}"))
+            
+    elif len(temp) == 3:
+        va=1
+        ti=temp[0]+temp[2]
+        co=temp[1]
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='以下の内容で登録します'))
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=f"日付:{temp[0]}, 予定名:{co}, 時刻{temp[2]}"))
+    else:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="形式が正しくないため登録できませんでした。。。"))
+    conn=sqlite3.connect('schedule.db')
+    c=conn.cursor()
+    user_id=event.source.user_id
+    c.execute(f"INSERT INTO articles VALUES ({va},{ti},{co},{user_id})")
+    conn.commit()
+    conn.close()
+
+# handler.add(): 引数にlinebotのリクエストのイベントを指定
+@handler.add(FollowEvent)# FollowEventをimportするのを忘れずに！
+def follow_message(event):# event: LineMessagingAPIで定義されるリクエストボディ
+    # print(event)
+    if event.type == "follow":# フォロー時のみメッセージを送信
+        line_bot_api.reply_message(
+            event.reply_token,# イベントの応答に用いるトークン
+            TextSendMessage(text="フォローありがとうございます！\n日付　予定名　(時刻)のように送信してください。予定の日に通知いたします!"))
+
+if __name__ == "__main__":
+#    app.run()
+    port = int(os.getenv("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
