@@ -1,3 +1,6 @@
+# 環境変数の読み込み
+import config
+
 # コピペゾーン
 from flask import Flask, request, abort
 
@@ -19,6 +22,10 @@ app = Flask(__name__)
 #環境変数取得
 CHANNEL_ACCESS_TOKEN = os.environ["CHANNEL_ACCESS_TOKEN"]
 CHANNEL_SECRET = os.environ["CHANNEL_SECRET"]
+
+# 実機の場合
+# CHANNEL_ACCESS_TOKEN = config.CHANNEL_ACCESS_TOKEN
+# CHANNEL_SECRET = config.CHANNEL_SECRET
 
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(CHANNEL_SECRET)
@@ -63,7 +70,7 @@ def handle_message(event):
         co=temp[1]
         line_bot_api.reply_message(
             event.reply_token,
-            [TextSendMessage(text='以下の内容で登録します'), TextSendMessage(text=f"日付:{temp[0]}, 予定名:{co}, 時刻{temp[2]}")])
+            [TextSendMessage(text='以下の内容で登録します'), TextSendMessage(text=f"日付:{temp[0]}, 予定名:{co}, 時刻{temp[2]}, user_id:{event.source.user_id}")])
         conn=sqlite3.connect('schedule.db')
         c=conn.cursor()
         user_id=event.source.user_id
