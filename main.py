@@ -50,7 +50,7 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    temp=event.message.text.split('　')
+    temp=event.message.text.strip().split(',')
     if len(temp) == 2:
         va=0
         ti=temp[0]
@@ -89,7 +89,7 @@ def follow_message(event):# event: LineMessagingAPIで定義されるリクエ�
     if event.type == "follow":# フォロー時のみメッセージを送信
         line_bot_api.reply_message(
             event.reply_token,# イベントの応答に用いるトークン
-            TextSendMessage(text="フォローありがとうございます！\n日付　予定名　(時刻)のように送信してください。予定の日に通知いたします!"))
+            TextSendMessage(text="フォローありがとうございます！\n日付, 予定名, (時刻)のように送信してください。予定の日に通知いたします!"))
 
 if __name__ == "__main__":
 #    app.run()
