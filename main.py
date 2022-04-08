@@ -1,5 +1,5 @@
-# 環境変数の読み込み
-import config
+# 環境変数の読み込み(実機の場合)
+# import config
 
 # コピペゾーン
 from flask import Flask, request, abort
@@ -23,7 +23,7 @@ app = Flask(__name__)
 CHANNEL_ACCESS_TOKEN = os.environ["CHANNEL_ACCESS_TOKEN"]
 CHANNEL_SECRET = os.environ["CHANNEL_SECRET"]
 
-# 実機の場合
+# 環境変数取得(実機の場合)
 # CHANNEL_ACCESS_TOKEN = config.CHANNEL_ACCESS_TOKEN
 # CHANNEL_SECRET = config.CHANNEL_SECRET
 
