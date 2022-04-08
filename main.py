@@ -19,7 +19,7 @@ import sqlite3
 
 app = Flask(__name__)
 
-#環境変数取得
+#環境変数取得 l
 CHANNEL_ACCESS_TOKEN = os.environ["CHANNEL_ACCESS_TOKEN"]
 CHANNEL_SECRET = os.environ["CHANNEL_SECRET"]
 
